@@ -22,7 +22,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-        
         // Create a new scene
         let scene = SCNScene()
         
@@ -85,8 +84,19 @@ extension ViewController {
         
         let bannerMaterial = bannerNode?.geometry?.materials.first(where: {$0.name == "logo"})
         bannerMaterial?.diffuse.contents = UIImage(named: "plane-banner-blue-logo")
+        sceneView.showsStatistics = true
+        sceneView.scene.rootNode.addChildNode(planeNode!)
         
-        self.sceneView.scene.rootNode.addChildNode(planeNode!)
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPosition = touches.first?.location(in: sceneView)
         
+        let hitTestResult = sceneView.hitTest(touchPosition!, types: .featurePoint)
+        
+        if !hitTestResult.isEmpty {
+            guard let hitResult = hitTestResult.first else { return }
+            print(hitResult.worldTransform.columns.3)
+            
+        }
     }
 }
