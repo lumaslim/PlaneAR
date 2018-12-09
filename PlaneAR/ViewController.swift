@@ -14,6 +14,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,6 +37,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = scene
         
         addPlane()
+        
+        
+        // Add gesture recognisers
+        let doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        doubleTapGesture.numberOfTapsRequired = 2
+        
+        sceneView.addGestureRecognizer(doubleTapGesture)
+        print("ViewDidLoad:: Finished")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,8 +94,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 extension ViewController {
     private func addPlane() {
         let planeBannerScene = SCNScene(named: "art.scnassets/plane_banner.scn")! // Where are the string dir autocompletion... Xcode y u do dis!?¿¿¿🦞
+        
         let planeNode = planeBannerScene.rootNode.childNode(withName: "planeBanner", recursively: false)
+        planeNode?.name = "plane"
         planeNode?.scale = .init(0.05, 0.05, 0.05) // some dot shorts...
+
         let bannerNode = planeNode?.childNode(withName: "banner", recursively: false)
         
         let bannerMaterial = bannerNode?.geometry?.materials.first(where: {$0.name == "logo"})
@@ -102,8 +114,69 @@ extension ViewController {
         
         if !hitTestResult.isEmpty {
             guard let hitResult = hitTestResult.first else { return }
-            print(hitResult.worldTransform.columns.3)
+            print("touchesMoved:: touch", hitResult.worldTransform.columns.3)
             
         }
     }
+}
+
+extension ViewController {
+    
+    @objc func doubleTapped(doubleTapGesture: UIGestureRecognizer) {
+        print("doubleTapped::")
+        // 2D screen coordinate
+        let touch2DPosition = doubleTapGesture.location(in: sceneView)
+        
+        let hitTestResult = sceneView.hitTest(touch2DPosition, types: .featurePoint)
+        
+        guard let hitResult = hitTestResult.first else { return }
+        
+        print("doubleTapped:: hitResult", hitResult)
+        // Transform matrix indicates intersection point between detected surface and hit ray.
+        // Should probably learn a dedicated linear algebra course.. LAFF
+        let touchPosHitWorldCoords = hitResult.worldTransform.columns.3
+        let touchPositionPoint = SCNVector3(touchPosHitWorldCoords.x, touchPosHitWorldCoords.y, touchPosHitWorldCoords.z)
+        
+        let finishFlagsNode = createFinishFlagsDestinationNode(flagsPlane: createFinishFlags2DSurface(), nodePosition: touchPositionPoint)
+        
+        sceneView.scene.rootNode.addChildNode(finishFlagsNode)
+        
+        // rip reference to aeroplane plane
+        guard let plane = sceneView.scene.rootNode.childNode(withName: "plane", recursively: true) else { return }
+        
+        movePlane(plane, to: touchPositionPoint, finish: finishFlagsNode)
+        print(finishFlagsNode)
+    }
+    static private func createFinishFlagsDestination() {
+        
+    }
+    private func createFinishFlags2DSurface() -> SCNPlane {
+        let flatSurfacePlaneGeometry = SCNPlane(width: 0.2, height: 0.2)
+        
+        let flagMaterial = SCNMaterial()
+        flagMaterial.diffuse.contents = UIImage(named: "art.scnassets/finish-flags.png")
+        
+        flatSurfacePlaneGeometry.materials = [ flagMaterial ]
+        
+        return flatSurfacePlaneGeometry
+    }
+    private func createFinishFlagsDestinationNode(flagsPlane: SCNPlane, nodePosition: SCNVector3) -> SCNNode {
+        let finishFlags2DNode = SCNNode(geometry: flagsPlane)
+        finishFlags2DNode.name = "finish"
+        
+        finishFlags2DNode.position = nodePosition
+        
+        return finishFlags2DNode
+    }
+    private func movePlane(_ plane: SCNNode, to destinationPoint: SCNVector3, finish: SCNNode) {
+        let flyAction = SCNAction.move(to: destinationPoint, duration: 5)
+        
+        plane.runAction(flyAction)
+    }
+    
+}
+
+
+extension ViewController: SCNPhysicsContactDelegate {
+    
 }
