@@ -22,6 +22,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        // Debug feature points
+        sceneView.debugOptions = [ .showFeaturePoints,
+                                   .showCameras,
+                                   .showCreases,
+                                   .showSkeletons,
+                                   .showConstraints,
+                                   .showLightInfluences ]
         // Create a new scene
         let scene = SCNScene()
         
