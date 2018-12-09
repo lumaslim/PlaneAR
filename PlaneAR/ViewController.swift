@@ -24,10 +24,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene()
         
         // Set the scene to the view
         sceneView.scene = scene
+        
+        addPlane()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +72,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
+        
+    }
+}
+
+extension ViewController {
+    private func addPlane() {
+        let planeBannerScene = SCNScene(named: "art.scnassets/plane_banner.scn")! // Where are the string dir autocompletion... Xcode y u do dis!?¿¿¿🦞
+        let planeNode = planeBannerScene.rootNode.childNode(withName: "planeBanner", recursively: false)
+        planeNode?.scale = .init(0.05, 0.05, 0.05) // some dot shorts...
+        let bannerNode = planeNode?.childNode(withName: "banner", recursively: false)
+        
+        let bannerMaterial = bannerNode?.geometry?.materials.first(where: {$0.name == "logo"})
+        bannerMaterial?.diffuse.contents = UIImage(named: "plane-banner-blue-logo")
+        
+        self.sceneView.scene.rootNode.addChildNode(planeNode!)
         
     }
 }
