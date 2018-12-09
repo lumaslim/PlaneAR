@@ -49,6 +49,7 @@
 		5501637621BBD9D000E3C511 /* PlaneARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaneARUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501637A21BBD9D000E3C511 /* PlaneARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneARUITests.swift; sourceTree = "<group>"; };
 		5501637C21BBD9D000E3C511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5501638B21BCCACE00E3C511 /* PlaneAR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlaneAR.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +84,7 @@
 				5501636E21BBD9D000E3C511 /* PlaneARTests */,
 				5501637921BBD9D000E3C511 /* PlaneARUITests */,
 				5501635621BBD9CF00E3C511 /* Products */,
+				5501638821BCCAC800E3C511 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +101,7 @@
 		5501635721BBD9CF00E3C511 /* PlaneAR */ = {
 			isa = PBXGroup;
 			children = (
+				5501638B21BCCACE00E3C511 /* PlaneAR.entitlements */,
 				5501635821BBD9CF00E3C511 /* AppDelegate.swift */,
 				5501635A21BBD9CF00E3C511 /* art.scnassets */,
 				5501635C21BBD9CF00E3C511 /* ViewController.swift */,
@@ -126,6 +129,13 @@
 				5501637C21BBD9D000E3C511 /* Info.plist */,
 			);
 			path = PlaneARUITests;
+			sourceTree = "<group>";
+		};
+		5501638821BCCAC800E3C511 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +206,17 @@
 				TargetAttributes = {
 					5501635421BBD9CF00E3C511 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 					5501636A21BBD9D000E3C511 = {
 						CreatedOnToolsVersion = 10.1;
@@ -436,6 +457,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PlaneAR/PlaneAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 835HC59RFV;
 				INFOPLIST_FILE = PlaneAR/Info.plist;
@@ -454,6 +476,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PlaneAR/PlaneAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 835HC59RFV;
 				INFOPLIST_FILE = PlaneAR/Info.plist;
