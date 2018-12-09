@@ -102,7 +102,7 @@ extension ViewController {
         let bannerNode = planeNode?.childNode(withName: "banner", recursively: false)
         
         let bannerMaterial = bannerNode?.geometry?.materials.first(where: {$0.name == "logo"})
-        bannerMaterial?.diffuse.contents = UIImage(named: "plane-banner-blue-logo")
+        bannerMaterial?.diffuse.contents = UIImage(named: "art.scnassets/plane-banner-blue-logo")
         sceneView.showsStatistics = true
         sceneView.scene.rootNode.addChildNode(planeNode!)
         
